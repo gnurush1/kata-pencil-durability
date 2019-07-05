@@ -5,6 +5,7 @@ def main():
 	testPencilDegradationWhereWeCantFinishASentence()
 	testSharpenPencilAfterRunningOutOfDurabilityAndThenFinishingTheSentence()
 	testSharpenPencilWithZeroLength()
+	testEraseFunctionality()
 
 def testWriteFunctionality():
 	correctOutput = "She sells sea shells down by the sea shore"
@@ -57,6 +58,13 @@ def testSharpenPencilWithZeroLength():
 	pencil.sharpen()
 	assert pencil.durability == 0
 
+def testEraseFunctionality():
+	correctOutput = "She sells sea shells down by the     shore"
+	pencil = Pencil()
+	originalText = "She sells sea shells down by the sea shore"
+	textToErase = "sea"
+	assert correctOutput == pencil.erase(originalText, textToErase)
+
 class Pencil():
 	def __init__(self, durability = 200, length = 5):
 		self.maxDurability = durability
@@ -81,6 +89,14 @@ class Pencil():
 		if self.length != 0:
 			self.durability = self.maxDurability
 			self.length -= 1
+
+	def erase(self, originalText, textToErase):
+		startingIndexOfTextToErase = originalText.rfind(textToErase)
+		listEquivalentOfOriginalText = list(originalText)
+		if startingIndexOfTextToErase != -1:
+			for i in range(startingIndexOfTextToErase, startingIndexOfTextToErase + len(textToErase)):
+				listEquivalentOfOriginalText[i] = " "
+		return "".join(listEquivalentOfOriginalText)
 
 if __name__ == '__main__':
 	main()
