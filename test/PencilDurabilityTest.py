@@ -6,6 +6,7 @@ def main():
 	testSharpenPencilAfterRunningOutOfDurabilityAndThenFinishingTheSentence()
 	testSharpenPencilWithZeroLength()
 	testEraseFunctionality()
+	testEraserDurabilityWhereWeCantFinishErasingTheWord()
 
 def testWriteFunctionality():
 	correctOutput = "She sells sea shells down by the sea shore"
@@ -72,6 +73,17 @@ def testEraserDurabilityWhereWeCanEraseTheEntireWord():
 	textToErase = "sea"
 	assert correctOutput == pencil.erase(originalText, textToErase)
 	assert pencil.eraserDurability == 97
+
+def testEraserDurabilityWhereWeCantFinishErasingTheWord():
+	correctOutput = "She sells sea shells down by the s   shore"
+	leadDurability = 0
+	pencilLength = 0
+	eraserDurability = 2
+	pencil = Pencil(leadDurability, pencilLength, eraserDurability)
+	originalText = "She sells sea shells down by the sea shore"
+	textToErase = "sea"
+	assert correctOutput == pencil.erase(originalText, textToErase)
+	assert pencil.eraserDurability == 0
 
 class Pencil():
 	def __init__(self, durability = 200, length = 5, eraserDurability = 100):
