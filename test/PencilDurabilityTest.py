@@ -4,7 +4,7 @@ def main():
     test1()
 
 
-def test1():
+def testWriteFunctionality():
     correctOutput = "She sells sea shells down by the sea shore"
     pencilDurability = PencilDurability()
     currentSentenceOnPaper = "She sells sea shells"
