@@ -65,11 +65,20 @@ def testEraseFunctionality():
 	textToErase = "sea"
 	assert correctOutput == pencil.erase(originalText, textToErase)
 
+def testEraserDurabilityWhereWeCanEraseTheEntireWord():
+	correctOutput = "She sells sea shells down by the     shore"
+	pencil = Pencil()
+	originalText = "She sells sea shells down by the sea shore"
+	textToErase = "sea"
+	assert correctOutput == pencil.erase(originalText, textToErase)
+	assert pencil.eraserDurability == 97
+
 class Pencil():
-	def __init__(self, durability = 200, length = 5):
+	def __init__(self, durability = 200, length = 5, eraserDurability = 100):
 		self.maxDurability = durability
 		self.durability = durability
 		self.length = length
+		self.eraserDurability = eraserDurability
 
 	def write(self, currentSentenceOnPaper, sentenceToWrite):
 		sentenceToWriteBuffer = ""
@@ -94,8 +103,11 @@ class Pencil():
 		startingIndexOfTextToErase = originalText.rfind(textToErase)
 		listEquivalentOfOriginalText = list(originalText)
 		if startingIndexOfTextToErase != -1:
-			for i in range(startingIndexOfTextToErase, startingIndexOfTextToErase + len(textToErase)):
-				listEquivalentOfOriginalText[i] = " "
+			for i in range(startingIndexOfTextToErase + len(textToErase) - 1, startingIndexOfTextToErase - 1, -1):
+				if not listEquivalentOfOriginalText[i].isspace():
+					if self.eraserDurability > 0:
+						listEquivalentOfOriginalText[i] = " "
+						self.eraserDurability -= 1
 		return "".join(listEquivalentOfOriginalText)
 
 if __name__ == '__main__':
