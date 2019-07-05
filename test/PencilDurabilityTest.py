@@ -4,6 +4,7 @@ def main():
 	testWriteFunctionality()
 	testPencilDegradationWhereWeCantFinishASentence()
 	testSharpenPencilAfterRunningOutOfDurabilityAndThenFinishingTheSentence()
+	testSharpenPencilWithZeroLength()
 
 def testWriteFunctionality():
 	correctOutput = "She sells sea shells down by the sea shore"
@@ -40,6 +41,21 @@ def testSharpenPencilAfterRunningOutOfDurabilityAndThenFinishingTheSentence():
 	correctOutput = "She sells sea shells down by the sea shore"
 	wordToFinishSentence = "shore"
 	assert correctOutput == pencil.write(writingOutput, wordToFinishSentence)
+
+def testSharpenPencilWithZeroLength():
+	correctOutput = "She sells sea shells down by the sea "
+	durability = 12
+	length = 0
+	pencil = Pencil(durability, length)
+	currentSentenceOnPaper = "She sells sea shells"
+	sentenceToWrite = " down by the sea "
+
+	writingOutput = pencil.write(currentSentenceOnPaper, sentenceToWrite)
+	assert correctOutput == writingOutput
+	assert pencil.durability == 0
+
+	pencil.sharpen()
+	assert pencil.durability == 0
 
 class Pencil():
 	def __init__(self, durability = 200, length = 5):
