@@ -101,6 +101,13 @@ def testEditWhereWeInsertArtichokeInTheWhiteSpaceGap():
 	pencil = Pencil()
 	assert correctOutput == pencil.edit(originalText, replacingWord, replacingStartIndex)
 
+def testEditWhereTheWhiteSpaceGapIsAtTheEndButTheReplacingWordIsTooLongForTheSentence():
+	originalText = "The doctor fears the      ."
+	replacingWord = "artichoke"
+	correctOutput = "The doctor fears the artic@"
+	replacingStartIndex = 21
+	pencil = Pencil()
+	assert correctOutput == pencil.edit(originalText, replacingWord, replacingStartIndex)
 
 class Pencil():
 	def __init__(self, durability = 200, length = 5, eraserDurability = 100):
@@ -135,7 +142,11 @@ class Pencil():
 	def edit(self, originalText, replacingWord, replacingStartIndex):
 		listEquivalentOfReplacingWord = list(replacingWord)
 		listEquivalentOfOriginalText = list(originalText)
-		for i in range(replacingStartIndex, replacingStartIndex + len(replacingWord)):
+		if (replacingStartIndex + len(replacingWord)) > len(originalText):
+			endIndex = len(originalText)
+		else:
+			endIndex = replacingStartIndex + len(replacingWord)
+		for i in range(replacingStartIndex, endIndex):
 			if listEquivalentOfOriginalText[i].isspace():
 				character = self.decreaseLeadDurability(listEquivalentOfReplacingWord[i - replacingStartIndex])
 				listEquivalentOfOriginalText[i] = character
