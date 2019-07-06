@@ -112,14 +112,7 @@ class Pencil():
 	def write(self, currentSentenceOnPaper, sentenceToWrite):
 		sentenceToWriteBuffer = ""
 		for i in range(0, len(sentenceToWrite)):
-			character = sentenceToWrite[i]
-			if not character.isspace():
-				if character.isupper() and self.durability >= 2:
-					self.durability -= 2
-				elif character.islower() and self.durability >= 1:
-					self.durability -= 1
-				else:
-					character = " "
+			character = self.decreaseLeadDurability(sentenceToWrite[i])
 			sentenceToWriteBuffer += character
 		return currentSentenceOnPaper + sentenceToWriteBuffer
 
