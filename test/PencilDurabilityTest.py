@@ -93,6 +93,15 @@ def testEditWhereWeInsertOnionInTheWhiteSpaceGap():
 	pencil = Pencil()
 	assert correctOutput == pencil.edit(originalText, replacingWord, replacingStartIndex)
 
+def testEditWhereWeInsertArtichokeInTheWhiteSpaceGap():
+	originalText = "An       a day keeps the doctor away"
+	replacingWord = "artichoke"
+	correctOutput = "An artich@k@ay keeps the doctor away"
+	replacingStartIndex = 4
+	pencil = Pencil()
+	assert correctOutput == pencil.edit(originalText, replacingWord, replacingStartIndex)
+
+
 class Pencil():
 	def __init__(self, durability = 200, length = 5, eraserDurability = 100):
 		self.maxDurability = durability
@@ -134,8 +143,22 @@ class Pencil():
 		listEquivalentOfReplacingWord = list(replacingWord)
 		listEquivalentOfOriginalText = list(originalText)
 		for i in range(replacingStartIndex, replacingStartIndex + len(replacingWord)):
-			listEquivalentOfOriginalText[i] = listEquivalentOfReplacingWord[i - replacingStartIndex]
+			if listEquivalentOfOriginalText[i].isspace():
+				character = self.decreaseLeadDurability(listEquivalentOfReplacingWord[i - replacingStartIndex])
+				listEquivalentOfOriginalText[i] = character
+			else:
+				listEquivalentOfOriginalText[i] = "@"
 		return "".join(listEquivalentOfOriginalText)
+
+	def decreaseLeadDurability(self, character):
+		if not character.isspace():
+			if character.isupper() and self.durability >= 2:
+				self.durability -= 2
+			elif character.islower() and self.durability >= 1:
+				self.durability -= 1
+			else:
+				character = " "
+		return character
 
 if __name__ == '__main__':
 	main()
