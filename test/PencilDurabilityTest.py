@@ -85,6 +85,14 @@ def testEraserDurabilityWhereWeCantFinishErasingTheWord():
 	assert correctOutput == pencil.erase(originalText, textToErase)
 	assert pencil.eraserDurability == 0
 
+def testEditWhereWeInsertOnionInTheWhiteSpaceGap():
+	originalText = "An       a day keeps the doctor away"
+	replacingWord = "onion"
+	correctOutput = "An onion a day keeps the doctor away"
+	replacingStartIndex = 4
+	pencil = Pencil()
+	assert correctOutput == pencil.edit(originalText, replacingWord, replacingStartIndex)
+
 class Pencil():
 	def __init__(self, durability = 200, length = 5, eraserDurability = 100):
 		self.maxDurability = durability
@@ -120,6 +128,13 @@ class Pencil():
 					if self.eraserDurability > 0:
 						listEquivalentOfOriginalText[i] = " "
 						self.eraserDurability -= 1
+		return "".join(listEquivalentOfOriginalText)
+
+	def edit(self, originalText, replacingWord, replacingStartIndex):
+		listEquivalentOfReplacingWord = list(replacingWord)
+		listEquivalentOfOriginalText = list(originalText)
+		for i in range(replacingStartIndex, replacingStartIndex + len(replacingWord)):
+			listEquivalentOfOriginalText[i] = listEquivalentOfReplacingWord[i - replacingStartIndex]
 		return "".join(listEquivalentOfOriginalText)
 
 if __name__ == '__main__':
