@@ -13,7 +13,7 @@ class Pencil():
 		return currentSentenceOnPaper + sentenceToWriteBuffer
 
 	def sharpen(self):
-		if self.length != 0:
+		if self.length > 0:
 			self.durability = self.maxDurability
 			self.length -= 1
 
